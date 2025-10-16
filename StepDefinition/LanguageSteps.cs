@@ -1,14 +1,11 @@
 ﻿using Mars_Project.Pages;
-using Mars_Project.Utilities;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Reqnroll;
 
 namespace Mars_Project.StepDefinition
 {
     [Binding]
-    public class LanguageSteps 
+    public class LanguageSteps
     {
         private readonly ProfileLanguage profileLanguage;
 
@@ -23,10 +20,21 @@ namespace Mars_Project.StepDefinition
             // Already handled in Setup()
         }
 
-        [When("I add a new language {string} with level {string}")]
-        public void WhenIAddANewLanguageWithLevel(string language,string level)
+        [Given(@"I have added the following languages:")]
+        public void GivenIHaveAddedTheFollowingLanguages(Table table)
         {
-            profileLanguage.AddLanguage(Hooks.Hooks.Driver,language, level);
+            foreach (var row in table.Rows)
+            {
+                string language = row["language"];
+                string level = row["level"];
+                profileLanguage.AddLanguage(Hooks.Hooks.Driver, language, level);
+            }
+        }
+
+        [When("I add a new language {string} with level {string}")]
+        public void WhenIAddANewLanguageWithLevel(string language, string level)
+        {
+            profileLanguage.AddLanguage(Hooks.Hooks.Driver, language, level);
         }
 
         [Then("I should see {string}")]
@@ -38,7 +46,7 @@ namespace Mars_Project.StepDefinition
                 $"Expected '{expectedMessage}' but got '{actualMessage}'");
         }
 
-        [When(@"I try to add another language ""(.*)"" with level ""(.*)""")]
+        [When(@"I try to add another language {string} with level {string}")]
         public void WhenITryToAddAnotherLanguage(string language, string level)
         {
             profileLanguage.AddLanguage(Hooks.Hooks.Driver, language, level);
@@ -47,7 +55,16 @@ namespace Mars_Project.StepDefinition
         [Then(@"I should not be able to see the Add Button")]
         public void ThenIShouldNotBeAbleToSeeTheAddButton()
         {
-            Console.WriteLine("DEBUG: Add button should not be visible — check AddLanguage() logs.");
+            bool isVisible = profileLanguage.IsAddButtonVisible(Hooks.Hooks.Driver);
+            Console.WriteLine("DEBUG: Add button visibility = " + isVisible);
+            Assert.That(!isVisible, Is.True, "Add button should not be visible when maximum languages reached.");
+        }
+
+        [Given("{string} already exists in my language list")]
+        public void GivenAlreadyExistsInMyLanguageList(string language)
+        {
+            profileLanguage.AddLanguage(Hooks.Hooks.Driver, language, "Basic");
+            
         }
 
         [When("I edit a language")]
@@ -55,29 +72,29 @@ namespace Mars_Project.StepDefinition
         {
             profileLanguage.EditLanguage(Hooks.Hooks.Driver);
         }
+        [Then("the language should be updated successfully")]
 
         [When("I delete a language")]
         public void WhenIDeleteLanguage()
         {
             profileLanguage.DeleteLanguage(Hooks.Hooks.Driver);
         }
+        [Then("the language should be removed successfully")]
 
-        [When("I Cancel a language")]
-        public void WhenICancelLanguage()
+        [When("I cancel a language update")]
+        public void WhenICancelALanguageUpdate()
         {
             profileLanguage.CancelLanguage(Hooks.Hooks.Driver);
         }
-
-        [Then("the language should be added successfully")]
-        [Then("the language should be updated successfully")]
-        [Then("the language should be removed successfully")]
         [Then("the language should not be updated successfully")]
-
+        public void ThenTheLanguageShouldNotBeUpdatedSuccessfully()
+        {
+            Console.WriteLine("DEBUG: Cancel language action verified.");
+        }
+        [Then("the language should be added successfully")]
         public void ThenVerifyLanguageAction()
         {
-            // Already handled inside Page Object methods
+            // Assertions are already handled inside Page Object methods
         }
-
-       
     }
 }

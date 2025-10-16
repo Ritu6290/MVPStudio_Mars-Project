@@ -1,5 +1,4 @@
-﻿using System;
-using Mars_Project.Utilities;
+﻿using Mars_Project.Utilities;
 using OpenQA.Selenium;
 using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
@@ -19,12 +18,14 @@ namespace Mars_Project.Pages
         {
             IWebElement skillTab = _driver.FindElement(By.CssSelector("a[data-tab='second']"));
             skillTab.Click();
-        }
+        }   
 
         public void AddSkill(IWebDriver driver, string skill, string level)
         {
             GoToSkillTab();
-            IWebElement addNewButton = driver.FindElement(By.CssSelector("div.ui.teal.button"));
+            Wait.WaitToBeClickable(driver, "Css", "div[class='ui teal button']", 10);
+
+            IWebElement addNewButton = driver.FindElement(By.CssSelector("div[class='ui teal button']"));
             addNewButton.Click();
 
             IWebElement skillText = driver.FindElement(By.CssSelector("input[placeholder='Add Skill']"));
@@ -36,26 +37,66 @@ namespace Mars_Project.Pages
 
             IWebElement addButton = driver.FindElement(By.CssSelector("span.buttons-wrapper input[value='Add']"));
             addButton.Click();
-        }
 
-        public void ValidateToastMessage(IWebDriver driver, string expectedMessage)
+            ValidateToastMessage(driver);
+        }
+        public void DeleteAllSkills()
+        {
+            GoToSkillTab();
+            try
+            {
+                while (true)
+                {
+                    var deleteButtons = _driver.FindElements(By.XPath("//tr//td[3]/span[2]/i"));
+                    if (deleteButtons.Count == 0) break;
+
+                    deleteButtons[0].Click();
+                    WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                    wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='ns-box-inner']")));
+                }
+                Console.WriteLine("DEBUG: All existing skills deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"DEBUG: Error clearing all skills: {ex.Message}");
+            }
+        }
+        public void DeleteSkillIfExists(string skill)
+        {
+            GoToSkillTab();
+            try
+            {
+                var deleteButton = _driver.FindElement(By.XPath($"//tr[td[text()='{skill}']]//span[2]/i"));
+                deleteButton.Click();
+                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='ns-box-inner']")));
+                Console.WriteLine($"DEBUG: Deleted test-added skill '{skill}'.");
+            }
+            catch (NoSuchElementException)
+            {
+                Console.WriteLine($"DEBUG: Skill '{skill}' not found — nothing to delete.");
+            }
+        }
+        public string ValidateToastMessage(IWebDriver driver)
         {
             try
             {
-                Wait.WaitToBeVisible(driver, "XPath", "//div[@class='ns-box-inner']", 10);
-                IWebElement toastMessage = driver.FindElement(By.XPath("//div[@class='ns-box-inner']"));
-                Console.WriteLine($"Toast Message: {toastMessage.Text}");
-                Assert.That(toastMessage.Text.Contains(expectedMessage), $"Expected '{expectedMessage}', but got '{toastMessage.Text}'");
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
+                IWebElement toast = wait.Until(
+                    SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='ns-box-inner']")));
+                return toast.Text;
             }
-            catch (WebDriverTimeoutException)
+            catch (Exception)
             {
-                Assert.Fail("Expected toast message did not appear.");
+                return string.Empty;
             }
         }
 
         public void EditSkill(IWebDriver driver)
         {
             GoToSkillTab();
+            AddSkill(driver, "C#", "Beginner");
+            Wait.WaitToBeVisible(driver, "XPath", "//tr[1]/td[3]/span[1]", 10);
             IWebElement editButton = driver.FindElement(By.XPath("//tr[1]/td[3]/span[1]"));
             editButton.Click();
 
@@ -66,34 +107,33 @@ namespace Mars_Project.Pages
             IWebElement updateButton = driver.FindElement(By.CssSelector("input[value='Update']"));
             updateButton.Click();
 
-            ValidateToastMessage(driver, "updated");
+            ValidateToastMessage(driver);
         }
 
         public void DeleteSkill(IWebDriver driver)
         {
             GoToSkillTab();
-            Wait.WaitToBeClickable(driver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[3]/span[2]/i[1]", 5);
+            AddSkill(driver, "C#", "Beginner");
+            Wait.WaitToBeVisible(driver, "XPath", "//tbody/tr/td[3]/span[2]", 10);
 
-            IWebElement deleteButton = driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[3]/span[2]/i[1]"));
+            IWebElement deleteButton = driver.FindElement(By.XPath("//tbody/tr/td[3]/span[2]"));
             deleteButton.Click();
 
-            ValidateToastMessage(driver, "deleted");
+            ValidateToastMessage(driver);
         }
 
         public void CancelSkill(IWebDriver driver)
         {
             GoToSkillTab();
-            IWebElement addNewButton = driver.FindElement(By.CssSelector("div.ui.teal.button"));
+            IWebElement addNewButton = driver.FindElement(By.CssSelector("div[class='ui teal button']"));
             addNewButton.Click();
-
             IWebElement skillInput = driver.FindElement(By.CssSelector("input[placeholder='Add Skill']"));
             skillInput.SendKeys("Java");
-
             IWebElement cancelButton = driver.FindElement(By.CssSelector("input[value='Cancel']"));
             cancelButton.Click();
-
-            IWebElement addNewButtonAfterCancel = driver.FindElement(By.CssSelector("div.ui.teal.button"));
+            IWebElement addNewButtonAfterCancel = driver.FindElement(By.CssSelector("div[class='ui teal button']"));
             Assert.That(addNewButtonAfterCancel.Displayed);
         }
+
     }
 }

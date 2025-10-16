@@ -110,28 +110,27 @@ namespace Mars_Project.Feature
         }
         
         [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("1. Add language Validation")]
-        [global::NUnit.Framework.TestCaseAttribute("English", "Basic", "added", "0", null)]
-        [global::NUnit.Framework.TestCaseAttribute("Spanish", "Conversational", "added", "1", null)]
-        [global::NUnit.Framework.TestCaseAttribute("", "Basic", "Please enter", "2", null)]
-        [global::NUnit.Framework.TestCaseAttribute("Spanish", "", "Please enter", "3", null)]
-        [global::NUnit.Framework.TestCaseAttribute("English", "Basic", "This language is already exist in your language list.", "4", null)]
-        [global::NUnit.Framework.TestCaseAttribute("English", "Conversational", "Duplicated data", "5", null)]
-        [global::NUnit.Framework.TestCaseAttribute("@@1232424@", "Basic", "added", "6", null)]
-        [global::NUnit.Framework.TestCaseAttribute("LooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongName wi" +
-            "th extra character", "Conversational", "added", "7", null)]
-        public async global::System.Threading.Tasks.Task _1_AddLanguageValidation(string language, string level, string expectedMessage, string @__pickleIndex, string[] exampleTags)
+        [global::NUnit.Framework.DescriptionAttribute("Add valid language")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        [global::NUnit.Framework.TestCaseAttribute("English", "Basic", "0", null)]
+        [global::NUnit.Framework.TestCaseAttribute("Spanish", "Conversational", "1", null)]
+        public async global::System.Threading.Tasks.Task AddValidLanguage(string language, string level, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "LanguageFeature"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("language", language);
             argumentsOfScenario.Add("level", level);
-            argumentsOfScenario.Add("expectedMessage", expectedMessage);
             string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("1. Add language Validation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add valid language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 8
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -141,13 +140,178 @@ namespace Mars_Project.Feature
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
+#line 9
     await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 10
     await testRunner.WhenAsync(string.Format("I add a new language \"{0}\" with level \"{1}\"", language, level), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 11
+    await testRunner.ThenAsync("I should see \"added\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Add language with empty fields")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        [global::NUnit.Framework.TestCaseAttribute("", "Basic", "2", null)]
+        [global::NUnit.Framework.TestCaseAttribute("Spanish", "", "3", null)]
+        public async global::System.Threading.Tasks.Task AddLanguageWithEmptyFields(string language, string level, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "LanguageFeature"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("language", language);
+            argumentsOfScenario.Add("level", level);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add language with empty fields", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 21
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 22
+    await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 23
+    await testRunner.WhenAsync(string.Format("I add a new language \"{0}\" with level \"{1}\"", language, level), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 24
+    await testRunner.ThenAsync("I should see \"Please enter\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Add a language that already exists")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task AddALanguageThatAlreadyExists()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "4";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add a language that already exists", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 34
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 35
+    await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 36
+    await testRunner.AndAsync("\"English\" already exists in my language list", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 37
+    await testRunner.WhenAsync("I add a new language \"English\" with level \"Basic\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 38
+    await testRunner.ThenAsync("I should see \"This language is already exist in your language list.\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Add a language with duplicated data")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task AddALanguageWithDuplicatedData()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "5";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add a language with duplicated data", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 41
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 42
+    await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 43
+    await testRunner.AndAsync("\"English\" already exists in my language list", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 44
+    await testRunner.WhenAsync("I add a new language \"English\" with level \"Conversational\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 45
+    await testRunner.ThenAsync("I should see \"Duplicated data\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Add language with invalid characters")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        [global::NUnit.Framework.TestCaseAttribute("@@1232424@", "Basic", "added", "6", null)]
+        [global::NUnit.Framework.TestCaseAttribute("LooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooongName", "Conversational", "added", "7", null)]
+        public async global::System.Threading.Tasks.Task AddLanguageWithInvalidCharacters(string language, string level, string expectedMessage, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "LanguageFeature"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("language", language);
+            argumentsOfScenario.Add("level", level);
+            argumentsOfScenario.Add("expectedMessage", expectedMessage);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add language with invalid characters", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 50
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 51
+    await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 52
+    await testRunner.WhenAsync(string.Format("I add a new language \"{0}\" with level \"{1}\"", language, level), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 53
     await testRunner.ThenAsync(string.Format("I should see \"{0}\"", expectedMessage), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -155,17 +319,19 @@ namespace Mars_Project.Feature
         }
         
         [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("2. Maximum of 4 language")]
-        public async global::System.Threading.Tasks.Task _2_MaximumOf4Language()
+        [global::NUnit.Framework.DescriptionAttribute("Maximum of 4 languages")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task MaximumOf4Languages()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "8";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("2. Maximum of 4 language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Maximum of 4 languages", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 22
- this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 62
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -174,13 +340,31 @@ namespace Mars_Project.Feature
             else
             {
                 await this.ScenarioStartAsync();
-#line 23
-  await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 63
+    await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 24
-    await testRunner.WhenAsync("I try to add another language \"French\" with level \"Basic\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "language",
+                            "level"});
+                table1.AddRow(new string[] {
+                            "English",
+                            "Basic"});
+                table1.AddRow(new string[] {
+                            "Spanish",
+                            "Conversational"});
+                table1.AddRow(new string[] {
+                            "French",
+                            "Basic"});
+                table1.AddRow(new string[] {
+                            "German",
+                            "Fluent"});
+#line 64
+    await testRunner.AndAsync("I have added the following languages:", ((string)(null)), table1, "And ");
 #line hidden
-#line 25
+#line 70
+    await testRunner.WhenAsync("I try to add another language \"Italian\" with level \"Basic\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 71
     await testRunner.ThenAsync("I should not be able to see the Add Button", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -188,17 +372,19 @@ namespace Mars_Project.Feature
         }
         
         [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("3. Edit an existing language")]
-        public async global::System.Threading.Tasks.Task _3_EditAnExistingLanguage()
+        [global::NUnit.Framework.DescriptionAttribute("Edit an existing language")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task EditAnExistingLanguage()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("3. Edit an existing language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Edit an existing language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 27
- this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 76
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -207,13 +393,13 @@ namespace Mars_Project.Feature
             else
             {
                 await this.ScenarioStartAsync();
-#line 28
+#line 77
     await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 29
+#line 78
     await testRunner.WhenAsync("I edit a language", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 79
     await testRunner.ThenAsync("the language should be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -221,16 +407,18 @@ namespace Mars_Project.Feature
         }
         
         [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("4. Delete a language")]
-        public async global::System.Threading.Tasks.Task _4_DeleteALanguage()
+        [global::NUnit.Framework.DescriptionAttribute("Delete a language")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task DeleteALanguage()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "10";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("4. Delete a language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete a language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 32
+#line 83
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -240,13 +428,13 @@ namespace Mars_Project.Feature
             else
             {
                 await this.ScenarioStartAsync();
-#line 33
+#line 84
     await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 34
+#line 85
     await testRunner.WhenAsync("I delete a language", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 35
+#line 86
     await testRunner.ThenAsync("the language should be removed successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -254,16 +442,18 @@ namespace Mars_Project.Feature
         }
         
         [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("5. Cancel a language")]
-        public async global::System.Threading.Tasks.Task _5_CancelALanguage()
+        [global::NUnit.Framework.DescriptionAttribute("Cancel a language update")]
+        [global::NUnit.Framework.CategoryAttribute("LanguageFeature")]
+        public async global::System.Threading.Tasks.Task CancelALanguageUpdate()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "LanguageFeature"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "11";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("5. Cancel a language", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cancel a language update", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 37
+#line 90
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -273,13 +463,13 @@ namespace Mars_Project.Feature
             else
             {
                 await this.ScenarioStartAsync();
-#line 38
+#line 91
     await testRunner.GivenAsync("I am logged into the application for languages", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 39
-    await testRunner.WhenAsync("I Cancel a language", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 92
+    await testRunner.WhenAsync("I cancel a language update", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 40
+#line 93
     await testRunner.ThenAsync("the language should not be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
