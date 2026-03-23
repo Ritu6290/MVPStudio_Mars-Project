@@ -1,30 +1,40 @@
-﻿using System;
+﻿using OpenQA.Selenium;
 using Mars_Project.Utilities;
-using NUnit.Framework;
-using OpenQA.Selenium;
-//using static System.Net.Mime.MediaTypeNames;
 
 namespace Mars_Project.Pages
 {
-	public class LoginPage
-	{
-        public void LoginAction(IWebDriver driver)
-		{
-			driver.Navigate().GoToUrl("http://localhost:5003/Home");
-            driver.Manage().Window.Maximize();
-			IWebElement signInButton = driver.FindElement(By.ClassName("item"));
-			signInButton.Click();
-			IWebElement emailAddress = driver.FindElement(By.Name("email"));
-			emailAddress.SendKeys("ritumahenderkar@gmail.com");
-			IWebElement passwordText = driver.FindElement(By.Name("password"));
-			passwordText.SendKeys("123123");
-            IWebElement loginButton = driver.FindElement(By.CssSelector(".fluid.ui.teal.button"));
-			loginButton.Click();
-			Wait.WaitToBeVisible(driver, "XPath", "//a[normalize-space()='Mars Logo']", 10);
-			IWebElement marsLogo = driver.FindElement(By.XPath("//a[normalize-space()='Mars Logo']"));
-			Assert.That(marsLogo.Displayed);
+    public class LoginPage
+    {
+        private readonly IWebDriver driver;
+
+        public LoginPage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        private IWebElement SignInButton => driver.FindElement(By.ClassName("item"));
+        private IWebElement EmailField => driver.FindElement(By.Name("email"));
+        private IWebElement PasswordField => driver.FindElement(By.Name("password"));
+        private IWebElement LoginButton => driver.FindElement(By.CssSelector(".fluid.ui.teal.button"));
+        private IWebElement MarsLogo => driver.FindElement(By.XPath("//a[normalize-space()='Mars Logo']"));
+
+        public void Navigate()
+        {
+            driver.Navigate().GoToUrl("http://localhost:5003/Home");
+        }
+
+        public void Login(string email, string password)
+        {
+            SignInButton.Click();
+            EmailField.SendKeys(email);
+            PasswordField.SendKeys(password);
+            LoginButton.Click();
+        }
+
+        public bool IsLoginSuccessful()
+        {
+            Wait.WaitToBeVisible(driver, "XPath", "//a[normalize-space()='Mars Logo']", 10);
+            return MarsLogo.Displayed;
         }
     }
 }
-
-

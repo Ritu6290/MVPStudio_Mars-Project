@@ -14,58 +14,31 @@ namespace Mars_Project.StepDefinition
             profileSkill = new ProfileSkill(Hooks.Hooks.Driver);
         }
 
-        [Given("I am logged into the application for skills")]
-        public void GivenIAmLoggedIn()
+        [When(@"I add a new skill {string} with level {string}")]
+        public void WhenIAddANewSkill(string skill, string level)
         {
-            // Already handled in setup
+            profileSkill.AddSkill(skill, level);
         }
 
-        [When("I add a new skill {string} with level {string}")]
-        public void WhenIAddANewSkillWithLevel(string skill, string level)
-        {
-            profileSkill.AddSkill(Hooks.Hooks.Driver,skill, level);
-        }
-
-        [Then("I should see {string} in skill tab")]
+        [Then(@"I should see {string} in skill tab")]
         public void ThenIShouldSeeInSkillTab(string expectedMessage)
         {
-            string actualMessage = profileSkill.ValidateToastMessage(Hooks.Hooks.Driver);
-            Console.WriteLine($"DEBUG: Expected='{expectedMessage}', Actual='{actualMessage}'");
+            string actualMessage = profileSkill.GetToastMessage();
+
             Assert.That(actualMessage.Contains(expectedMessage),
-                        $"Expected '{expectedMessage}' but got '{actualMessage}'");
+                $"Expected '{expectedMessage}' but got '{actualMessage}'");
         }
 
-        [Given(@"{string} already exists in my skill list")]
-        public void GivenAlreadyExistsInMySkillList(string skill)
+        [When(@"I edit skill from {string} to {string}")]
+        public void WhenIEditSkill(string oldSkill, string newSkill)
         {
-            profileSkill.AddSkill(Hooks.Hooks.Driver,skill, "Beginner");
+            profileSkill.EditSkill(oldSkill, newSkill);
         }
 
-        [When("I edit a skill")]
-        public void WhenIEditSkill()
+        [When(@"I delete skill {string}")]
+        public void WhenIDeleteSkill(string skill)
         {
-            profileSkill.EditSkill(Hooks.Hooks.Driver);
-        }
-
-        [When("I delete a skill")]
-        public void WhenIDeleteSkill()
-        {
-            profileSkill.DeleteSkill(Hooks.Hooks.Driver);
-        }
-
-        [When("I cancel a skill")]
-        public void WhenICancelSkill()
-        {
-            profileSkill.CancelSkill(Hooks.Hooks.Driver);
-        }
-
-        [Then("the skill should be added successfully")]
-        [Then("the skill should be updated successfully")]
-        [Then("the skill should be removed successfully")]
-        [Then("the skill should not be updated successfully")]
-        public void ThenSkillAction()
-        {
-            // Already handled inside page object
+            profileSkill.DeleteSkill(skill);
         }
     }
 }

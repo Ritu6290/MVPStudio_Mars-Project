@@ -23,11 +23,13 @@ namespace Mars_Project.Hooks
         public void BeforeLanguageScenario()
         {
             SetupDriver();
-            new LoginPage().LoginAction(Driver);
 
-            ProfileLanguage profileLanguage = new ProfileLanguage();
-            profileLanguage.DeleteAllLanguages(Driver);
-            Console.WriteLine("DEBUG: All existing languages cleared before test start.");
+            var loginPage = new LoginPage(Driver);
+            loginPage.Navigate();
+            loginPage.Login("ritumahenderkar@gmail.com", "123123");
+
+            var profileLanguage = new ProfileLanguage(Driver);
+            profileLanguage.DeleteAllLanguages();
         }
 
         [AfterScenario("LanguageFeature")]
@@ -35,10 +37,10 @@ namespace Mars_Project.Hooks
         {
             try
             {
-                ProfileLanguage profileLanguage = new ProfileLanguage();
+                ProfileLanguage profileLanguage = new ProfileLanguage(Driver);
                 foreach (var lang in AddedLanguages)
                 {
-                    profileLanguage.DeleteLanguageIfExists(Driver, lang);
+                    profileLanguage.DeleteLanguageIfExists(lang);
                 }
                 AddedLanguages.Clear();
             }
@@ -57,13 +59,14 @@ namespace Mars_Project.Hooks
         public void BeforeSkillScenario()
         {
             SetupDriver();
-            new LoginPage().LoginAction(Driver);
 
-            ProfileSkill profileSkill = new ProfileSkill(Driver);
+            var loginPage = new LoginPage(Driver);
+            loginPage.Navigate();
+            loginPage.Login("ritumahenderkar@gmail.com", "123123");
+
+            var profileSkill = new ProfileSkill(Driver);
             profileSkill.DeleteAllSkills();
-            Console.WriteLine("DEBUG: All existing skills cleared before test start.");
         }
-
         [AfterScenario("SkillFeature")]
         public void AfterSkillScenario()
         {
